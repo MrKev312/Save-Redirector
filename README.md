@@ -1,4 +1,6 @@
-[TOC]
+- [Save Redirector](#save-redirector)
+  * [Features](#features)
+  * [How to help with this project](#how-to-help-with-this-project)
 
 # Save Redirector
 Have you ever looked into your documents folder and thought, "Well, most of these folders aren't even documents!" If so, then this program is for you!
