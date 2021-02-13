@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>SaveRedirection.manifest</ApplicationManifest>
+    <SignAssembly>true</SignAssembly>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\edit.png" />
+    <None Remove="Resources\remove_circle.png" />
+    <None Remove="Resources\settings.png" />
+    <None Remove="settings.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JunctionPoint\JunctionPoint.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\edit.png" />
+    <Resource Include="Resources\remove_circle.png" />
+    <Resource Include="Resources\settings.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="EditRedirection.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="EditRedirection.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>

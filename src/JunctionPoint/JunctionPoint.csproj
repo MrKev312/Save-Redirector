@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>LGM-AdrianHum</Authors>
+    <Company />
+    <PackageProjectUrl>https://gist.github.com/LGM-AdrianHum/260bc9ab3c4cd49bc8617a2abe84ca74</PackageProjectUrl>
+  </PropertyGroup>
+
+</Project>
