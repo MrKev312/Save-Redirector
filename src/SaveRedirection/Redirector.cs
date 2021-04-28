@@ -52,9 +52,11 @@ namespace SaveRedirection
         public static void Straighten(Redirection redirection)
         {
             // Delete junction
-            CreateMaps.JunctionPoint.Delete(redirection.SourcePath);
+            if(Directory.Exists(redirection.SourcePath))
+                CreateMaps.JunctionPoint.Delete(redirection.SourcePath);
             // Move folder back
-            FileSystem.MoveDirectory(redirection.DestinationPath, redirection.SourcePath);
+            if(Directory.Exists(redirection.DestinationPath))
+                FileSystem.MoveDirectory(redirection.DestinationPath, redirection.SourcePath);
         }
     }
 }
