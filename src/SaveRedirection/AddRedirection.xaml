@@ -24,7 +24,7 @@
         <Button x:Name="GameImageButton" Content="Redirection Icon" HorizontalAlignment="Left" Height="20" Margin="10,90,0,0" VerticalAlignment="Top" Width="102" Click="GameImageButton_Click"/>
         <TextBox x:Name="RedirectionImageTextBox" Margin="117,91,105,0" TextWrapping="Wrap" IsReadOnly="True" Height="18" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
         <Image x:Name="RedirectionIcon" Height="90" Margin="0,15,5,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="90" Grid.Column="1"/>
-        <Button x:Name="Apply" Content="Apply" Margin="0,0,10,1" Click="Apply_Click" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="102"/>
-        <TextBox x:Name="StatusReport" Height="19" Margin="10,115,117,0" TextWrapping="Wrap" VerticalAlignment="Top" IsEnabled="False" Grid.ColumnSpan="2"/>
+        <Button x:Name="Apply" Content="Apply" Margin="0,0,10,1" Click="Apply_Click" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90"/>
+        <TextBox x:Name="StatusReport" Height="19" Margin="10,115,105,0" TextWrapping="Wrap" VerticalAlignment="Top" IsEnabled="False"/>
     </Grid>
 </Window>
