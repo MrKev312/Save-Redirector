@@ -66,7 +66,7 @@ namespace SaveRedirection
 
         private static string BrowserDialog()
         {
-            VistaFolderBrowserDialog browserDialog = new VistaFolderBrowserDialog();
+            VistaFolderBrowserDialog browserDialog = new();
             browserDialog.ShowDialog();
             if (!string.IsNullOrWhiteSpace(browserDialog.SelectedPath))
                 return browserDialog.SelectedPath;

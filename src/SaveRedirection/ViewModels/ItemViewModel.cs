@@ -21,7 +21,7 @@ namespace SaveRedirection.ViewModels
 
         public static void EditItem(Redirection redirectionToEdit)
         {
-            EditRedirection Window = new EditRedirection(redirectionToEdit);
+            EditRedirection Window = new(redirectionToEdit);
             Window.Show();
         }
     }

@@ -82,7 +82,7 @@ namespace SaveRedirection
 
         private static string BrowserDialog()
         {
-            VistaFolderBrowserDialog browserDialog = new VistaFolderBrowserDialog();
+            VistaFolderBrowserDialog browserDialog = new();
             browserDialog.ShowDialog();
             if (!string.IsNullOrWhiteSpace(browserDialog.SelectedPath))
                 return browserDialog.SelectedPath;
@@ -92,7 +92,7 @@ namespace SaveRedirection
 
         private static string FileDialog(string title = null)
         {
-            VistaOpenFileDialog fileDialog = new VistaOpenFileDialog();
+            VistaOpenFileDialog fileDialog = new();
             if (title != null)
                 fileDialog.Title = title;
             fileDialog.ShowDialog();
@@ -142,7 +142,7 @@ namespace SaveRedirection
             }
             // Check if user has selected a special folder, and if so warn them and give directions on how to move special folders through Windows's settings
             bool ShouldShowWarning = false;
-            DirectoryInfo directoryInfo = new DirectoryInfo(DocumentTextBox.Text);
+            DirectoryInfo directoryInfo = new(DocumentTextBox.Text);
             foreach (Environment.SpecialFolder suit in Enum.GetValues(typeof(Environment.SpecialFolder)))
             {
                 if (directoryInfo.FullName == Environment.GetFolderPath(suit))
@@ -173,7 +173,7 @@ namespace SaveRedirection
                 }
             }
             #endregion
-            Redirection redirection = new Redirection()
+            Redirection redirection = new()
             {
                 SourcePath = DocumentTextBox.Text,
                 DestinationPath = SaveGamesTextBox.Text,
