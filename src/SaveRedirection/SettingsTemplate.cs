@@ -10,10 +10,7 @@ namespace SaveRedirection
         public bool Loaded = false;
         public SettingsTemplate Settings;
 
-        private static readonly Lazy<SettingsLoader>
-        lazy =
-        new Lazy<SettingsLoader>
-            (() => new SettingsLoader());
+        private static readonly Lazy<SettingsLoader> lazy = new(() => new SettingsLoader());
 
         public static SettingsLoader Instance { get { return lazy.Value; } }
 

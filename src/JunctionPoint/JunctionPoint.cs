@@ -16,10 +16,6 @@ namespace CreateMaps
     /// <summary>
     ///     Provides access to NTFS junction points in .Net.
     /// </summary>
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Local")]
-    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     public static class JunctionPoint
     {
         /// <summary>

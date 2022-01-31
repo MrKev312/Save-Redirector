@@ -12,7 +12,7 @@ namespace SaveRedirection
     /// </summary>
     public partial class EditRedirection : Window
     {
-        private Redirection redirection;
+        private readonly Redirection redirection;
         public EditRedirection(Redirection redirection)
         {
             InitializeComponent();
@@ -46,7 +46,7 @@ namespace SaveRedirection
         }
         private static string FileDialog(string title = null)
         {
-            VistaOpenFileDialog fileDialog = new VistaOpenFileDialog();
+            VistaOpenFileDialog fileDialog = new();
             if (title != null)
                 fileDialog.Title = title;
             fileDialog.ShowDialog();
