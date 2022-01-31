@@ -119,11 +119,11 @@ namespace CreateMaps
                 Directory.CreateDirectory(junctionPoint);
             }
 
-            using (var handle = OpenReparsePoint(junctionPoint, EFileAccess.GenericWrite))
+            using (SafeFileHandle handle = OpenReparsePoint(junctionPoint, EFileAccess.GenericWrite))
             {
-                var targetDirBytes = Encoding.Unicode.GetBytes(NonInterpretedPathPrefix + Path.GetFullPath(targetDir));
+                byte[] targetDirBytes = Encoding.Unicode.GetBytes(NonInterpretedPathPrefix + Path.GetFullPath(targetDir));
 
-                var reparseDataBuffer =
+                REPARSE_DATA_BUFFER reparseDataBuffer =
                     new REPARSE_DATA_BUFFER
                     {
                         ReparseTag = IO_REPARSE_TAG_MOUNT_POINT,
@@ -137,16 +137,15 @@ namespace CreateMaps
 
                 Array.Copy(targetDirBytes, reparseDataBuffer.PathBuffer, targetDirBytes.Length);
 
-                var inBufferSize = Marshal.SizeOf(reparseDataBuffer);
-                var inBuffer = Marshal.AllocHGlobal(inBufferSize);
+                int inBufferSize = Marshal.SizeOf(reparseDataBuffer);
+                IntPtr inBuffer = Marshal.AllocHGlobal(inBufferSize);
 
                 try
                 {
                     Marshal.StructureToPtr(reparseDataBuffer, inBuffer, false);
 
-                    int bytesReturned;
-                    var result = DeviceIoControl(handle.DangerousGetHandle(), FSCTL_SET_REPARSE_POINT,
-                        inBuffer, targetDirBytes.Length + 20, IntPtr.Zero, 0, out bytesReturned, IntPtr.Zero);
+                    bool result = DeviceIoControl(handle.DangerousGetHandle(), FSCTL_SET_REPARSE_POINT,
+                        inBuffer, targetDirBytes.Length + 20, IntPtr.Zero, 0, out int bytesReturned, IntPtr.Zero);
 
                     if (!result)
                         ThrowLastWin32Error("Unable to create junction point.");
@@ -176,9 +175,9 @@ namespace CreateMaps
                 return;
             }
 
-            using (var handle = OpenReparsePoint(junctionPoint, EFileAccess.GenericWrite))
+            using (SafeFileHandle handle = OpenReparsePoint(junctionPoint, EFileAccess.GenericWrite))
             {
-                var reparseDataBuffer = new REPARSE_DATA_BUFFER
+                REPARSE_DATA_BUFFER reparseDataBuffer = new REPARSE_DATA_BUFFER
                 {
                     ReparseTag = IO_REPARSE_TAG_MOUNT_POINT,
                     ReparseDataLength = 0,
@@ -186,15 +185,14 @@ namespace CreateMaps
                 };
 
 
-                var inBufferSize = Marshal.SizeOf(reparseDataBuffer);
-                var inBuffer = Marshal.AllocHGlobal(inBufferSize);
+                int inBufferSize = Marshal.SizeOf(reparseDataBuffer);
+                IntPtr inBuffer = Marshal.AllocHGlobal(inBufferSize);
                 try
                 {
                     Marshal.StructureToPtr(reparseDataBuffer, inBuffer, false);
 
-                    int bytesReturned;
-                    var result = DeviceIoControl(handle.DangerousGetHandle(), FSCTL_DELETE_REPARSE_POINT,
-                        inBuffer, 8, IntPtr.Zero, 0, out bytesReturned, IntPtr.Zero);
+                    bool result = DeviceIoControl(handle.DangerousGetHandle(), FSCTL_DELETE_REPARSE_POINT,
+                        inBuffer, 8, IntPtr.Zero, 0, out int bytesReturned, IntPtr.Zero);
 
                     if (!result)
                         ThrowLastWin32Error("Unable to delete junction point.");
@@ -229,9 +227,9 @@ namespace CreateMaps
             if (!Directory.Exists(path))
                 return false;
 
-            using (var handle = OpenReparsePoint(path, EFileAccess.GenericRead))
+            using (SafeFileHandle handle = OpenReparsePoint(path, EFileAccess.GenericRead))
             {
-                var target = InternalGetTarget(handle);
+                string target = InternalGetTarget(handle);
                 return target != null;
             }
         }
@@ -250,9 +248,9 @@ namespace CreateMaps
         /// </exception>
         public static string GetTarget(string junctionPoint)
         {
-            using (var handle = OpenReparsePoint(junctionPoint, EFileAccess.GenericRead))
+            using (SafeFileHandle handle = OpenReparsePoint(junctionPoint, EFileAccess.GenericRead))
             {
-                var target = InternalGetTarget(handle);
+                string target = InternalGetTarget(handle);
                 if (target == null)
                     throw new IOException("Path is not a junction point.");
 
@@ -262,31 +260,30 @@ namespace CreateMaps
 
         private static string InternalGetTarget(SafeFileHandle handle)
         {
-            var outBufferSize = Marshal.SizeOf(typeof(REPARSE_DATA_BUFFER));
-            var outBuffer = Marshal.AllocHGlobal(outBufferSize);
+            int outBufferSize = Marshal.SizeOf(typeof(REPARSE_DATA_BUFFER));
+            IntPtr outBuffer = Marshal.AllocHGlobal(outBufferSize);
 
             try
             {
-                int bytesReturned;
-                var result = DeviceIoControl(handle.DangerousGetHandle(), FSCTL_GET_REPARSE_POINT,
-                    IntPtr.Zero, 0, outBuffer, outBufferSize, out bytesReturned, IntPtr.Zero);
+                bool result = DeviceIoControl(handle.DangerousGetHandle(), FSCTL_GET_REPARSE_POINT,
+                    IntPtr.Zero, 0, outBuffer, outBufferSize, out int bytesReturned, IntPtr.Zero);
 
                 if (!result)
                 {
-                    var error = Marshal.GetLastWin32Error();
+                    int error = Marshal.GetLastWin32Error();
                     if (error == ERROR_NOT_A_REPARSE_POINT)
                         return null;
 
                     ThrowLastWin32Error("Unable to get information about junction point.");
                 }
 
-                var reparseDataBuffer = (REPARSE_DATA_BUFFER)
+                REPARSE_DATA_BUFFER reparseDataBuffer = (REPARSE_DATA_BUFFER)
                     Marshal.PtrToStructure(outBuffer, typeof(REPARSE_DATA_BUFFER));
 
                 if (reparseDataBuffer.ReparseTag != IO_REPARSE_TAG_MOUNT_POINT)
                     return null;
 
-                var targetDir = Encoding.Unicode.GetString(reparseDataBuffer.PathBuffer,
+                string targetDir = Encoding.Unicode.GetString(reparseDataBuffer.PathBuffer,
                     reparseDataBuffer.SubstituteNameOffset, reparseDataBuffer.SubstituteNameLength);
 
                 if (targetDir.StartsWith(NonInterpretedPathPrefix))
@@ -302,7 +299,7 @@ namespace CreateMaps
 
         private static SafeFileHandle OpenReparsePoint(string reparsePoint, EFileAccess accessMode)
         {
-            var reparsePointHandle = new SafeFileHandle(CreateFile(reparsePoint, accessMode,
+            SafeFileHandle reparsePointHandle = new SafeFileHandle(CreateFile(reparsePoint, accessMode,
                 EFileShare.Read | EFileShare.Write | EFileShare.Delete,
                 IntPtr.Zero, ECreationDisposition.OpenExisting,
                 EFileAttributes.BackupSemantics | EFileAttributes.OpenReparsePoint, IntPtr.Zero), true);

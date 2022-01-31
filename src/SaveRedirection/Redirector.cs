@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace SaveRedirection
 {
-    class Redirector
+    internal class Redirector
     {
         public static void Redirect(Redirection redirection, System.Windows.Controls.TextBox ReportBox)
         {
@@ -52,10 +52,10 @@ namespace SaveRedirection
         public static void Straighten(Redirection redirection)
         {
             // Delete junction
-            if(Directory.Exists(redirection.SourcePath))
+            if (Directory.Exists(redirection.SourcePath))
                 CreateMaps.JunctionPoint.Delete(redirection.SourcePath);
             // Move folder back
-            if(Directory.Exists(redirection.DestinationPath))
+            if (Directory.Exists(redirection.DestinationPath))
                 FileSystem.MoveDirectory(redirection.DestinationPath, redirection.SourcePath);
         }
     }

@@ -12,7 +12,7 @@ namespace SaveRedirection
     /// </summary>
     public partial class EditRedirection : Window
     {
-        Redirection redirection;
+        private Redirection redirection;
         public EditRedirection(Redirection redirection)
         {
             InitializeComponent();

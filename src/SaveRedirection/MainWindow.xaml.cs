@@ -30,7 +30,7 @@ namespace SaveRedirection
 #endif
             if ((int)SettingsLoader.LoadSettings(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SaveRedirection")) > 0)
             {
-                Settings settings = new Settings
+                Settings settings = new()
                 {
                     Title = "First time opening"
                 };
@@ -42,14 +42,14 @@ namespace SaveRedirection
 
         private void DockPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Settings settings = new Settings();
+            Settings settings = new();
             settings.ShowDialog();
             SettingsLoader.SaveSettings();
         }
 
         private void NewRedirectionButton_Click(object sender, RoutedEventArgs e)
         {
-            AddRedirection addGame = new AddRedirection();
+            AddRedirection addGame = new();
             addGame.ShowDialog();
         }
 

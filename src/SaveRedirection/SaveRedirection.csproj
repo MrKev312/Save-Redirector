@@ -7,10 +7,8 @@
     <ApplicationManifest>SaveRedirection.manifest</ApplicationManifest>
     <SignAssembly>true</SignAssembly>
     <Version>0.1.1</Version>
-  </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>true</Optimize>
+	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

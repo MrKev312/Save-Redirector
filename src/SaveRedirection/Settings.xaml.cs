@@ -14,7 +14,7 @@ namespace SaveRedirection
     {
         // Use Win32API call to figue out where the Saved Games folder is located (why is there still no easy way for that Microsoft?)
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out string pszPath);
+        private static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out string pszPath);
         public Settings()
         {
             InitializeComponent();
@@ -76,7 +76,7 @@ namespace SaveRedirection
 
         private void ApplyButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

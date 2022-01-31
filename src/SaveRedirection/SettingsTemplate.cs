@@ -5,7 +5,7 @@ using System.IO;
 
 namespace SaveRedirection
 {
-    class SettingsLoader
+    internal class SettingsLoader
     {
         public bool Loaded = false;
         public SettingsTemplate Settings;
@@ -54,7 +54,7 @@ namespace SaveRedirection
         }
     }
 
-    class SettingsTemplate
+    internal class SettingsTemplate
     {
         // Keep track of Settings Version in case settings drastically change
         public int SettingsVersion;
